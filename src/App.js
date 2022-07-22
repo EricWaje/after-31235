@@ -1,17 +1,32 @@
 import Navbar from './components/navbar/Navbar';
 import ItemListContainer from './components/container/ItemListContainer';
-import ItemCount from './components/ItemCount';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Cart from './components/cart/Cart';
+import ItemDetailContainer from './components/container/ItemDetailContainer';
+import Provider from './context/cartContext';
 
 function App() {
-    const onAdd = () => {
-        console.log('click');
-    };
     return (
-        <>
-            <Navbar />
-            <ItemListContainer saludo="Bienvenidos!" />
-            <ItemCount stock={5} initial={1} onAdd={onAdd} />
-        </>
+        <Provider>
+            <BrowserRouter>
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<ItemListContainer />} />
+                    <Route
+                        path="/category/:categoryId"
+                        element={<ItemListContainer />}
+                    />
+                    <Route
+                        path="/detail/:id"
+                        element={<ItemDetailContainer />}
+                    />
+                    <Route path="/cart" element={<Cart />} />
+                </Routes>
+                {/* <ItemCount stock={prod.stock} initial={1} onAdd={onAdd} /> */}
+            </BrowserRouter>
+            {/*             <p>Hijo parrafo</p>
+            <h2>Un h2</h2> */}
+        </Provider>
     );
 }
 

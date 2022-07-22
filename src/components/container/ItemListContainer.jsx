@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { products } from '../../mock/products';
 import ItemList from './ItemList';
 
 const ItemListContainer = ({ saludo }) => {
     const [items, setItems] = useState([]);
+    const { categoryId } = useParams();
+
     useEffect(() => {
         const traerProductos = new Promise((res, rej) => {
+            const prodFiltrados = products.filter(
+                (prod) => prod.category === categoryId
+            );
             setTimeout(() => {
-                res(products);
-            }, 2000);
+                categoryId ? res(prodFiltrados) : res(products);
+            }, 500);
         });
         traerProductos
             .then((data) => {
@@ -18,17 +24,15 @@ const ItemListContainer = ({ saludo }) => {
             .catch((error) => {
                 console.log(error);
             });
-
-        //console.log('primero');
-        //llamado a una API
-    }, []);
-
-    //console.log(items);
-
-    //console.log('segundo');
+    }, [categoryId]);
 
     return (
-        <div>
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+            }}
+        >
             <h2>{saludo}</h2>
             <ItemList items={items} />
         </div>
